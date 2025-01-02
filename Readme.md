@@ -1,0 +1,1 @@
+This is my learning path to CS61A in Berkeley. I'm going to use this repo to store my solutions to the exercises and to keep track of my progress.
