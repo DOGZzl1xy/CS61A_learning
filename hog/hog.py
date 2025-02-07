@@ -44,6 +44,9 @@ def boar_brawl(player_score, opponent_score):
     """
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
+    if player_score == 0:
+        
+    
     # END PROBLEM 2
 
 
