@@ -25,9 +25,10 @@ def roll_dice(num_rolls, dice=six_sided):
     total = 0
     has_one = False
     for i in range (1, num_rolls + 1):
-        if dice() == 1:
+        temp_dice = dice()
+        if temp_dice == 1:
             has_one = True
-        total += dice()
+        total += temp_dice
     if has_one:
         total = 1
     return total
@@ -44,7 +45,7 @@ def boar_brawl(player_score, opponent_score):
     """
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
-    if player_score == 0:
+    
         
     
     # END PROBLEM 2
