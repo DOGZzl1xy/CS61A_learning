@@ -45,6 +45,11 @@ def boar_brawl(player_score, opponent_score):
     """
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
+    one_digit_play = player_score % 10
+    ten_digit_opponent = (opponent_score // 10) % 10
+    temp_abs = max(abs(one_digit_play - ten_digit_opponent) * 3, 1)
+    return temp_abs
+    
     
         
     
@@ -66,6 +71,12 @@ def take_turn(num_rolls, player_score, opponent_score, dice=six_sided):
     assert num_rolls <= 10, 'Cannot roll more than 10 dice.'
     # BEGIN PROBLEM 3
     "*** YOUR CODE HERE ***"
+    if num_rolls != 0:
+        add_temp = roll_dice(num_rolls, dice)
+    else:
+        add_temp = boar_brawl(player_score, opponent_score)
+    return add_temp
+    
     # END PROBLEM 3
 
 
@@ -91,12 +102,24 @@ def num_factors(n):
     """Return the number of factors of N, including 1 and N itself."""
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
+    count = 0
+    for i in range(1, n+1):
+        if n % i == 0:
+            count += 1
+    return count
+    
     # END PROBLEM 4
 
 def sus_points(score):
     """Return the new score of a player taking into account the Sus Fuss rule."""
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
+    k = score
+    if num_factors(score) == 3 or num_factors(score) == 4:
+        while not is_prime(k):
+            k += 1
+    return k
+    
     # END PROBLEM 4
 
 def sus_update(num_rolls, player_score, opponent_score, dice=six_sided):
@@ -105,6 +128,12 @@ def sus_update(num_rolls, player_score, opponent_score, dice=six_sided):
     """
     # BEGIN PROBLEM 4
     "*** YOUR CODE HERE ***"
+    old_result = simple_update(num_rolls, player_score, opponent_score, dice)
+    if num_factors(old_result) == 3 or num_factors(old_result) == 4:
+        new_result = sus_points(old_result)
+    else:
+        new_result = old_result
+    return new_result
     # END PROBLEM 4
 
 
@@ -123,8 +152,7 @@ def play(strategy0, strategy1, update,
     E.g., play(always_roll_5, always_roll_5, sus_update) simulates a game in
     which both players always choose to roll 5 dice on every turn and the Sus
     Fuss rule is in effect.
-
-    A strategy function, such as always_roll_5, takes the current player's
+    
     score and their opponent's score and returns the number of dice the current
     player chooses to roll.
 
@@ -144,6 +172,22 @@ def play(strategy0, strategy1, update,
     who = 0  # Who is about to take a turn, 0 (first) or 1 (second)
     # BEGIN PROBLEM 5
     "*** YOUR CODE HERE ***"
+    
+    while score0 < GOAL and score1 < GOAL:
+        
+        if who == 0:
+            dice_player0 = strategy0(score0, score1)
+            score0 = update(dice_player0, score0, score1, dice)
+        else: 
+            dice_player1 = strategy1(score1, score0)
+            score1 = update(dice_player1, score1, score0, dice)
+        
+        who = 1 - who
+        
+        if max(score0, score1) >= goal: 
+            break
+    
+         
     # END PROBLEM 5
     return score0, score1
 
