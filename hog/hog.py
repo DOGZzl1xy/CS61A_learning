@@ -349,8 +349,6 @@ def boar_strategy(score, opponent_score, threshold=11, num_rolls=6):
         num_rolls = 0
     return num_rolls
     
-    
-    
     # return num_rolls  # Remove this line once implemented.
     # END PROBLEM 10
 
@@ -360,17 +358,71 @@ def sus_strategy(score, opponent_score, threshold=11, num_rolls=6):
     THRESHOLD points, and returns NUM_ROLLS otherwise. Consider both the Boar Brawl and 
     Suss Fuss rules."""
     # BEGIN PROBLEM 11
-    return num_rolls  # Remove this line once implemented.
+    new_score = sus_update(0, score, opponent_score, dice=six_sided)
+    
+    if new_score - score >= threshold:
+        num_rolls = 0
+    return num_rolls
+    
+    # return num_rolls  # Remove this line once implemented.
     # END PROBLEM 11
 
 
 def final_strategy(score, opponent_score):
     """Write a brief description of your final strategy.
-
     *** YOUR DESCRIPTION HERE ***
+    
+    Always compare to the competitor to make the dynamic threshold. If the competitor score leads so much, try to take advantage of the boar brawl. 
+    Also use dynamic therhold in different stage of the game. When the game begins, use a bigger slice of dice to make the first move. Otherwise, try small numbers for safe growth. 
+    Try to take advantage of sus as much as possible. 
+    Besides, when it comes close to win, use a more tiny slice of dice to approach the number. 
+    
     """
     # BEGIN PROBLEM 12
-    return 6  # Remove this line once implemented.
+
+    base_threshold = 11 # I tried a lot of times to find 11 is the best threshold to begin with, but maybe it's not the thing if tested for more times. 
+    
+    # Dynamic threshold adjustment based on the difference in scores
+    score_difference = opponent_score - score
+    if score < 50:
+        dynamic_threshold = max(base_threshold - score_difference // 10, 1)
+    elif score < 70:
+        dynamic_threshold = max(base_threshold - score_difference // 8, 1)
+    elif score < 90:
+        dynamic_threshold = max(base_threshold - score_difference // 6, 1)
+    else:
+        dynamic_threshold = max(base_threshold - score_difference // 4, 1)
+    
+    # Calculate potential gain from rolling 0 dice (considering Sus Fuss)
+    zero_roll_gain = sus_update(0, score, opponent_score) - score
+    
+    # Calculate gain from Boar Brawl
+    boar_brawl_gain = boar_brawl(score, opponent_score)
+    
+    # Prioritize rolling 0 dice if the gain is significant
+    if zero_roll_gain >= dynamic_threshold:
+        return 0
+    
+    # Prioritize Boar Brawl if the gain is significant
+    if boar_brawl_gain >= dynamic_threshold:
+        return 0
+    
+    # If close to winning, take a more conservative approach
+    # At first, I tried to go through all the dice from 1 to 10, but it turns that python will rises a question telling me that it is out of time. 
+    # So I have to delete it, which might influence the accurancy and causes a little bit low in win rate. 
+    if score >= 95:
+        return 2
+    elif score >= 90:
+        return 3
+    elif score >= 85:
+        return 4
+    elif score >= 80:
+        return 5
+    
+    return 4
+
+    
+    # return 6  # Remove this line once implemented.
     # END PROBLEM 12
 
 
