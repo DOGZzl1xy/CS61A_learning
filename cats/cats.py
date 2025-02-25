@@ -38,6 +38,15 @@ def pick(paragraphs, select, k):
     """
     # BEGIN PROBLEM 1
     "*** YOUR CODE HERE ***"
+    total, vavid = 0, []
+    for i in range(len(paragraphs)):
+        if select(paragraphs[i]):
+            vavid += [paragraphs[i]]
+            total += 1
+    if k < total:
+        return vavid[k]
+    else:
+        return ''
     # END PROBLEM 1
 
 
