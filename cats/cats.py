@@ -67,6 +67,18 @@ def about(keywords):
 
     # BEGIN PROBLEM 2
     "*** YOUR CODE HERE ***"
+
+    def check(para):
+        flag = False
+        list_lowercase = split(lower(remove_punctuation(para)))
+        for i in range(len(keywords)):
+            for j in range(len(list_lowercase)):
+                if keywords[i] == list_lowercase[j]:
+                    flag = True
+                    return flag
+        return flag
+    return check
+    
     # END PROBLEM 2
 
 
