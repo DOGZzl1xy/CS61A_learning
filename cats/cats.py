@@ -247,7 +247,23 @@ def furry_fixes(typed, source, limit):
     5
     """
     # BEGIN PROBLEM 6
-    assert False, 'Remove this line'
+    def inside(typed, source, limit, total):
+        if total > limit:
+            return limit + 1
+        elif (not len(typed)) and (len(source)): 
+            return total + len(source)
+        elif len(typed) and not len(source):
+            return total + len(typed)
+        elif not len(source):
+            return total
+        else:
+            if typed[0] != source[0]:
+                total += 1
+            return inside(typed[1:], source[1:], limit, total)
+        
+    return inside(typed, source, limit, 0)
+    
+
     # END PROBLEM 6
 
 
