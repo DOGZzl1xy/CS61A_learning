@@ -190,8 +190,9 @@ class ThrowerAnt(Ant):
                 return random_bee(current_place.bees)
             else:
                 current_place = current_place.entrance
-        
         return None
+        
+        
         
         # return random_bee(self.place.bees) # REPLACE THIS LINE
         # END Problem 3 and 4
