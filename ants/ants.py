@@ -300,7 +300,32 @@ class WallAnt(Ant):
 
 # BEGIN Problem 7
 # The HungryAnt Class
-
+class HungryAnt(Ant):
+    name = 'Hungey'
+    food_cost = 4
+    chew_cooldown = 3
+    
+    implemented = True
+    
+    def __init__(self, health = 1):
+        super().__init__(health)
+        self.cooldown = 0
+    
+    def action(self, gamestate):
+        super().action(gamestate)
+        current_time = gamestate.time
+        if self.cooldown:
+            self.cooldown -= 1
+        else:
+            if self.place.bees:
+                eaten_bee = random_bee(self.place.bees)
+                
+                eaten_bee.reduce_health(eaten_bee.health)
+                self.cooldown = self.chew_cooldown
+            
+    
+        
+    
 # END Problem 7
 
 
