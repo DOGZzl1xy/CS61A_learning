@@ -230,10 +230,7 @@ class ShortThrower(ThrowerAnt):
     upper_bound = 3
     lower_bound = 0
     # BEGIN Problem 4
-    implemented = True   # Change to True to view in the GUI
-    
-    
-    
+    implemented = True   # Change to True to view in the GUI 
     # END Problem 4
 
 
@@ -247,8 +244,6 @@ class LongThrower(ThrowerAnt):
     lower_bound = 5
     # BEGIN Problem 4
     implemented = True   # Change to True to view in the GUI
-    
-    
     # END Problem 4
 
 
@@ -260,7 +255,7 @@ class FireAnt(Ant):
     food_cost = 5
     # OVERRIDE CLASS ATTRIBUTES HERE
     # BEGIN Problem 5
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
     # END Problem 5
 
     def __init__(self, health=3):
@@ -276,6 +271,17 @@ class FireAnt(Ant):
         """
         # BEGIN Problem 5
         "*** YOUR CODE HERE ***"
+        bee_list = self.place.bees[:]
+        super().reduce_health(amount)
+        
+        if self.health <= 0:    
+            for bee in bee_list:
+                bee.reduce_health(self.damage + amount)  
+        else:
+            for bee in bee_list:
+                bee.reduce_health(amount)
+
+        
         # END Problem 5
 
 # BEGIN Problem 6
