@@ -8,18 +8,22 @@ test = {
           'code': r"""
           >>> x = 20
           >>> x + 2
-          22
+          3d3ab69a0677d75a0ef4a99e0d2d1451
+          # locked
           >>> x
-          20
+          e1ac00f801290865dd772310ea7c60e4
+          # locked
           >>> y = 5
           >>> y = y + 3
           >>> y * 2
-          16
+          309984ef0dc06025a91b127042939a0e
+          # locked
           >>> y + x
-          28
+          1c1c92ed084737be2f07abf6a2c86c2f
+          # locked
           """,
           'hidden': False,
-          'locked': False,
+          'locked': True,
           'multiline': False
         }
       ],
