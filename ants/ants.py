@@ -56,6 +56,7 @@ class Insect:
     next_id = 0  # Every insect gets a unique id number
     damage = 0
     # ADD CLASS ATTRIBUTES HERE
+    is_waterproof = False
 
     def __init__(self, health, place=None):
         """Create an Insect with a health amount and a starting PLACE."""
@@ -439,7 +440,11 @@ class Water(Place):
         its health to 0."""
         # BEGIN Problem 10
         "*** YOUR CODE HERE ***"
-        
+        if not insect.is_waterproof:
+            insect.reduce_health(insect.health)
+        else:
+            super().add_insect(insect)
+            
         
         # END Problem 10
 
@@ -574,6 +579,8 @@ class Bee(Insect):
 
     name = 'Bee'
     damage = 1
+    
+    is_waterproof = True
 
 
     def sting(self, ant):
