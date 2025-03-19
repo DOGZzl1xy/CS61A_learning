@@ -56,7 +56,7 @@ class Insect:
     next_id = 0  # Every insect gets a unique id number
     damage = 0
     # ADD CLASS ATTRIBUTES HERE
-    is_waterproof = False
+    
 
     def __init__(self, health, place=None):
         """Create an Insect with a health amount and a starting PLACE."""
@@ -111,6 +111,7 @@ class Ant(Insect):
     food_cost = 0
     is_container = False
     # ADD CLASS ATTRIBUTES HERE
+    is_doubled = False
 
     def __init__(self, health=1):
         super().__init__(health)
@@ -157,6 +158,9 @@ class Ant(Insect):
         """Double this ants's damage, if it has not already been doubled."""
         # BEGIN Problem 12
         "*** YOUR CODE HERE ***"
+        if not self.is_doubled:
+            self.damage *= 2
+            self.is_doubled = True
         # END Problem 12
 
 
@@ -450,6 +454,12 @@ class Water(Place):
 
 # BEGIN Problem 11
 # The ScubaThrower class
+class ScubaThrower(ThrowerAnt):
+    name = 'Scuba'
+    food_cost = 6
+    
+    implemented = True
+    is_waterproof = True
 # END Problem 11
 
 
@@ -459,8 +469,10 @@ class QueenAnt(ThrowerAnt):
     name = 'Queen'
     food_cost = 7
     # OVERRIDE CLASS ATTRIBUTES HERE
+    
     # BEGIN Problem 12
-    implemented = False   # Change to True to view in the GUI
+    implemented = True   # Change to True to view in the GUI
+    
     # END Problem 12
 
     def action(self, gamestate):
@@ -469,6 +481,24 @@ class QueenAnt(ThrowerAnt):
         """
         # BEGIN Problem 12
         "*** YOUR CODE HERE ***"
+        super().action(gamestate)
+        
+        current_place = self.place.exit
+        
+        while current_place:
+            the_ant = current_place.ant
+            
+            if not the_ant:
+               current_place = current_place.exit
+               continue
+            if the_ant.is_container and the_ant.ant_contained:
+                the_ant.ant_contained.double()
+   
+            the_ant.double()
+            current_place = current_place.exit
+
+
+                
         # END Problem 12
 
     def reduce_health(self, amount):
@@ -477,6 +507,14 @@ class QueenAnt(ThrowerAnt):
         """
         # BEGIN Problem 12
         "*** YOUR CODE HERE ***"
+        self.health -= amount
+        if self.health <= 0:
+            self.zero_health_callback()
+
+            if self.place is not None:
+                self.place.remove_insect(self)
+            
+            ants_lose()
         # END Problem 12
 
 
