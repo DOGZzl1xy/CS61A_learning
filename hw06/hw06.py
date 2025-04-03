@@ -1,4 +1,4 @@
-passphrase = 'REPLACE_THIS_WITH_PASSPHRASE'
+passphrase = 'gobears'
 
 def midsem_survey(p):
     """
@@ -50,6 +50,10 @@ class VendingMachine:
     def __init__(self, product, price):
         """Set the product and its price, as well as other instance attributes."""
         "*** YOUR CODE HERE ***"
+        self.prodcut = product
+        self.price = price
+        self.stock = 0
+        self.balance = 0
 
     def restock(self, n):
         """Add n to the stock and return a message about the updated stock level.
@@ -57,6 +61,8 @@ class VendingMachine:
         E.g., Current candy stock: 3
         """
         "*** YOUR CODE HERE ***"
+        self.stock += n
+        return f'Current {self.prodcut} stock: {self.stock}'
 
     def add_funds(self, n):
         """If the machine is out of stock, return a message informing the user to restock
@@ -69,6 +75,12 @@ class VendingMachine:
         E.g., Current balance: $4
         """
         "*** YOUR CODE HERE ***"
+        
+        if not self.stock:
+            return f'Nothing left to vend. Please restock. Here is your ${n}.'
+        else:
+            self.balance += n
+            return f'Current balance: ${self.balance}'
 
     def vend(self):
         """Dispense the product if there is sufficient stock and funds and
@@ -82,7 +94,21 @@ class VendingMachine:
               Please add $3 more funds.
         """
         "*** YOUR CODE HERE ***"
-
+        if self.stock:
+            if self.balance == self.price:
+                self.balance -= self.price
+                self.stock -= 1
+                return f'Here is your {self.prodcut}.'
+            elif self.balance > self.price:
+                charge = self.balance - self.price
+                self.balance -= self.price
+                self.stock -= 1
+                self.balance = 0
+                return f'Here is your {self.prodcut} and ${charge} change.'
+            else:
+                return f'Please add ${self.price - self.balance} more funds.'
+        else:
+            return f'Nothing left to vend. Please restock.'
 
 def store_digits(n):
     """Stores the digits of a positive number n in a linked list.
@@ -105,6 +131,18 @@ def store_digits(n):
     """
     "*** YOUR CODE HERE ***"
 
+    def store_digits(n):
+        digits = []
+        while n:
+            digits.append(n % 10)
+            n //= 10
+        head = Link.empty
+        digits = digits[::-1]
+        while digits:
+            head = Link(digits.pop(), head)
+        return head
+    return store_digits(n)
+
 
 def deep_map_mut(func, s):
     """Mutates a deep link s by replacing each item found with the
@@ -126,8 +164,15 @@ def deep_map_mut(func, s):
     <9 <16> 25 36>
     """
     "*** YOUR CODE HERE ***"
+    if s is Link.empty:
+        return
+    if isinstance(s.first, Link):
+        deep_map_mut(func, s.first)
+    else:
+        s.first = func(s.first)
+    deep_map_mut(func, s.rest)
 
-
+    
 def prune_small(t, n):
     """Prune the tree mutatively, keeping only the n branches
     of each node with the smallest labels.
@@ -145,11 +190,11 @@ def prune_small(t, n):
     >>> t3
     Tree(6, [Tree(1), Tree(3, [Tree(1), Tree(2)])])
     """
-    while ____:
-        largest = max(____, key=____)
+    while len(t.branches) > n:
+        largest = max(t.branches, key=lambda b: b.label)
         t.branches.remove(largest)
     for b in t.branches:
-        ____
+        prune_small(b, n)
 
 
 def delete(t, x):
@@ -172,13 +217,13 @@ def delete(t, x):
     Tree(1, [Tree(4), Tree(5), Tree(3, [Tree(6)]), Tree(6), Tree(7), Tree(8), Tree(4)])
     """
     new_branches = []
-    for _________ in ________________:
-        _______________________
+    for b in t.branches:
+        delete(b, x)
         if b.label == x:
-            __________________________________
+            new_branches.extend(b.branches)
         else:
-            __________________________________
-    t.branches = ___________________
+            new_branches.append(b)
+    t.branches = new_branches
 
 
 def two_list(vals, counts):
