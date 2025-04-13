@@ -34,6 +34,9 @@ def scheme_eval(expr, env, _=None): # Optional third argument is ignored
     else:
         # BEGIN PROBLEM 3
         "*** YOUR CODE HERE ***"
+        operator = scheme_eval(first, env)
+        operands = rest.map(lambda operand: scheme_eval(operand, env))
+        return scheme_apply(operator, operands, env)
         # END PROBLEM 3
 
 def scheme_apply(procedure, args, env):
@@ -49,8 +52,7 @@ def scheme_apply(procedure, args, env):
         py_list = []
         while args_remain is not nil: 
             py_list.append(args_remain.first)
-            args_remain =  args_remain.rest
-            
+            args_remain =  args_remain.rest  
         # END PROBLEM 2
         try:
             # BEGIN PROBLEM 2
@@ -59,7 +61,6 @@ def scheme_apply(procedure, args, env):
                 return procedure.py_func(*py_list, env)
             else:
                 return procedure.py_func(*py_list)
-            
             # END PROBLEM 2
         except TypeError as err:
             raise SchemeError('incorrect number of arguments: {0}'.format(procedure))
