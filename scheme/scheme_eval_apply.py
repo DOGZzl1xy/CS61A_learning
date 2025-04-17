@@ -91,7 +91,13 @@ def eval_all(expressions, env):
     2
     """
     # BEGIN PROBLEM 6
-    return scheme_eval(expressions.first, env) # replace this with lines of your own code
+    if expressions is nil:
+        return None
+    current_exp = expressions
+    while isinstance(current_exp, Pair):
+        last_call = scheme_eval(current_exp.first, env)
+        current_exp = current_exp.rest
+    return last_call # replace this with lines of your own code
     # END PROBLEM 6
 
 
