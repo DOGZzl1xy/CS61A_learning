@@ -57,6 +57,14 @@ class Frame:
             raise SchemeError('Incorrect number of arguments to function call')
         # BEGIN PROBLEM 8
         "*** YOUR CODE HERE ***"
+        child_frame = Frame(self)
+        keys_to_bind = formals
+        value_to_bind = vals
+        while keys_to_bind:
+            child_frame.define(keys_to_bind.first, value_to_bind.first)  
+            keys_to_bind = keys_to_bind.rest
+            value_to_bind = value_to_bind.rest     
+        return child_frame
         # END PROBLEM 8
 
 ##############
