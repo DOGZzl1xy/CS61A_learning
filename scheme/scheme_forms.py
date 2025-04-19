@@ -211,6 +211,19 @@ def make_let_frame(bindings, env):
     names = vals = nil
     # BEGIN PROBLEM 14
     "*** YOUR CODE HERE ***"
+    current_pair = bindings
+    formal_list, val_list = [], []
+    while current_pair is not nil:
+        validate_form(current_pair.first, 2, 2)
+        formal_list.append(current_pair.first.first)
+        val_list.append(eval_all(current_pair.first.rest, env))
+        current_pair = current_pair.rest
+    
+    while formal_list:
+        names = Pair(formal_list.pop(), names)
+        vals = Pair(val_list.pop(), vals)
+        validate_formals(names)
+        
     # END PROBLEM 14
     return env.make_child_frame(names, vals)
 
